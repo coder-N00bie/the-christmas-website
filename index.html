@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Christmas Website</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fondamento&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* Layout: one soft sage column in the spirit of a paper advent calendar. Script headings, letterspaced eyebrows, flat olive/red/yellow ornament shapes, cream pop-ups with thin pill buttons. */
+:root{
+  --bg:#ECEFDC;          /* pale sage */
+  --surface:#F7F8EB;     /* cream card / pop-up */
+  --ink:#2E3528;         /* dark olive-charcoal text */
+  --muted:#6B7355;
+  --olive:#5B6438;       /* tree dark */
+  --sage:#8F9C6D;        /* tree light, thin borders */
+  --red:#D64B5C;         /* ornament red */
+  --red-deep:#B83A4A;
+  --yellow:#E8D06A;      /* star yellow */
+  --yellow-deep:#C9AE3F;
+  --hint:#DDE4A5;        /* soft yellow-green button fill */
+  --navy:#2C3444;
+  --sparkle:rgba(246,239,196,.95);
+  --shadow:0 6px 24px rgba(46,53,40,.10);
+  --display:'Fondamento','Snell Roundhand','Brush Script MT',cursive;
+  --body:'Nunito','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1E2519; --surface:#2A3324; --ink:#EEF0DE; --muted:#B6BE9F;
+    --olive:#8F9C6D; --sage:#A7B386; --red:#E0606F; --yellow:#EBD57A; --yellow-deep:#E8D06A; --hint:#5F6A3A;
+    --sparkle:rgba(246,239,196,.5); --shadow:0 6px 24px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1E2519; --surface:#2A3324; --ink:#EEF0DE; --muted:#B6BE9F;
+  --olive:#8F9C6D; --sage:#A7B386; --red:#E0606F; --yellow:#EBD57A; --yellow-deep:#E8D06A; --hint:#5F6A3A;
+  --sparkle:rgba(246,239,196,.5); --shadow:0 6px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.5;color:var(--ink);background:var(--bg);overflow-x:hidden}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{
+  position:relative;z-index:1;max-width:1040px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:36px 56px;
+}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;padding-block:8px 40px}
+.eyebrow{font-family:var(--body);font-weight:600;font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink)}
+h1{font-family:var(--display);font-weight:400;line-height:1.05;margin:0;text-wrap:balance;font-size:clamp(2.7rem,9vw,5.4rem);color:var(--ink)}
+.ornaments{display:flex;align-items:center;gap:14px;margin-top:4px}
+.ornaments::before,.ornaments::after{content:"";width:64px;height:1.5px;background:var(--sage)}
+.orn{width:22px;height:22px;border-radius:50%;background:var(--red)}
+.orn.star{width:30px;height:30px;border-radius:0;background:var(--yellow);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.orn.olive{background:var(--sage)}
+.lede{max-width:34rem;margin:0;font-size:1.08rem;color:var(--muted);font-weight:400}
+
+.countdown{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:4px}
+.tile{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);min-width:88px;padding:12px 12px 10px;display:flex;flex-direction:column;align-items:center}
+.tile b{font-family:var(--display);font-weight:400;font-size:2.4rem;line-height:1;color:var(--red);font-variant-numeric:tabular-nums}
+.tile span{font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.tile:nth-child(2) b{color:var(--olive)}
+.tile:nth-child(3) b{color:var(--yellow-deep)}
+.tile:nth-child(4) b{color:var(--red)}
+.xmasday{font-family:var(--display);font-size:2.2rem;color:var(--red)}
+
+.btn{
+  font-family:var(--body);font-weight:600;font-size:1rem;border:1.5px solid var(--olive);border-radius:999px;
+  padding:10px 26px;cursor:pointer;background:var(--red);color:#fff;border-color:var(--red);
+  transition:transform .12s,background .15s,color .15s;line-height:1.2;text-decoration:none;display:inline-block;
+}
+.btn:hover{background:var(--red-deep);border-color:var(--red-deep)}
+.btn:focus-visible,.card:focus-within,.hole:focus-visible,.mcard:focus-visible,.cell:focus-visible,.close:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.btn.green{background:var(--olive);border-color:var(--olive);color:#fff}
+.btn.green:hover{background:var(--ink);border-color:var(--ink)}
+.btn.yellow{background:var(--hint);border-color:var(--hint);color:var(--ink)}
+.btn.yellow:hover{background:var(--yellow);border-color:var(--yellow)}
+.btn.outline{background:var(--surface);border-color:var(--sage);color:var(--ink)}
+.btn.outline:hover{background:var(--hint);border-color:var(--hint)}
+
+/* ---------- games grid ---------- */
+.section-title{display:flex;flex-direction:column;align-items:center;gap:6px;margin:28px 0 22px;text-align:center}
+.section-title h2{font-family:var(--display);font-weight:400;font-size:2.4rem;margin:0;color:var(--ink);line-height:1.1}
+.section-title .kicker{font-size:.78rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.card{
+  background:var(--surface);border-radius:16px;box-shadow:var(--shadow);
+  padding:24px 22px 22px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;min-width:0;
+  transition:transform .18s,box-shadow .18s;position:relative;
+}
+.card:hover{box-shadow:0 14px 34px rgba(46,53,40,.16)}
+.card{transform-style:preserve-3d;will-change:transform}
+.card .icon{width:76px;height:76px;display:grid;place-items:center;font-size:2.2rem;background:var(--red);border-radius:50%;color:#fff}
+.card:nth-child(4n+2) .icon{background:var(--yellow);border-radius:0;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);width:92px;height:92px;font-size:1.7rem}
+.card:nth-child(4n+3) .icon{background:var(--sage)}
+.card:nth-child(4n+4) .icon{background:var(--olive)}
+.card h3{font-family:var(--display);font-weight:400;font-size:1.75rem;margin:6px 0 0;line-height:1.1;text-wrap:balance}
+.card p{margin:0;color:var(--muted);font-size:.95rem;flex:1}
+.card .best{font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.card .best b{color:var(--red);font-variant-numeric:tabular-nums;font-weight:700}
+.card .btn{margin-top:6px}
+
+footer{margin-top:52px;text-align:center;color:var(--muted);font-size:.95rem}
+footer .ho{font-family:var(--display);font-size:1.8rem;color:var(--ink);margin-bottom:4px}
+
+/* ---------- overlay ---------- */
+.overlay{
+  position:fixed;inset:0;z-index:50;background:rgba(46,53,40,.45);
+  display:grid;place-items:center;
+  padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:max(12px,env(safe-area-inset-bottom,0px));
+  padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));
+}
+.win{
+  background:var(--surface);border-radius:16px;width:100%;max-width:720px;max-height:100%;
+  display:flex;flex-direction:column;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.win header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 20px 6px}
+.win header h2{font-family:var(--display);font-weight:400;font-size:2rem;margin:0;flex:1;min-width:0;line-height:1.1}
+.hud{display:flex;gap:8px;flex-wrap:wrap}
+.hud span{border:1.5px solid var(--sage);border-radius:999px;padding:3px 12px;font-weight:600;font-size:.85rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.close{width:36px;height:36px;border-radius:50%;border:0;background:transparent;color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+.close:hover{background:var(--hint)}
+.stage{padding:14px 20px 22px;display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+.hint{margin:0;color:var(--muted);text-align:center;font-size:.92rem}
+.gcanvas{max-width:100%;border-radius:14px;touch-action:none;display:block}
+.result{
+  background:var(--hint);color:var(--ink);border-radius:14px;padding:18px 24px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.result h3{font-family:var(--display);font-weight:400;font-size:1.9rem;margin:0}
+.result p{margin:0;font-weight:600}
+
+/* memory */
+.memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:440px}
+.mcard{aspect-ratio:1;border:0;border-radius:14px;background:var(--olive);padding:0;cursor:pointer;display:grid;place-items:center;color:var(--surface);transition:transform .15s,background .15s}
+.mcard:hover{transform:scale(1.04)}
+.mcard.up{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--sage)}
+.mcard.done{background:var(--hint);color:var(--ink);cursor:default;transform:none;box-shadow:none}
+.mcard[disabled]{cursor:default}
+
+/* whack */
+.holes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:420px}
+.hole{aspect-ratio:1;border:0;border-radius:16px;background:var(--sage);cursor:pointer;position:relative;overflow:hidden;display:grid;place-items:end center;padding:0}
+.hole .lid{position:absolute;inset:0 0 auto 0;height:32%;background:var(--yellow)}
+.hole .critter{line-height:0;transform:translateY(110%);transition:transform .14s;padding-bottom:6px;position:relative;z-index:1}
+.hole.up .critter{transform:translateY(0)}
+.hole.bonk{background:var(--red)}
+
+/* tic tac toe */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:330px}
+.cell{aspect-ratio:1;border:1.5px solid var(--sage);border-radius:14px;background:var(--surface);padding:0;cursor:pointer;display:grid;place-items:center;transition:transform .12s,background .12s}
+.cell:hover:not([disabled]){transform:scale(1.05);background:var(--hint)}
+.cell.winline{background:var(--yellow);border-color:var(--yellow)}
+.cell[disabled]{cursor:default}
+.gbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+#spark{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:70}
+#title .ch{display:inline-block;will-change:transform}
+#title .w{display:inline-block;white-space:nowrap}
+.shiny{background:linear-gradient(110deg,var(--ink) 35%,var(--yellow-deep) 50%,var(--ink) 65%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+@keyframes shine{from{background-position:120% 0}to{background-position:-120% 0}}
+.ico{width:1em;height:1em;display:inline-block;vertical-align:-.15em;flex:none}
+.card .icon .ico{width:46px;height:46px}
+.card:nth-child(4n+2) .icon .ico{width:38px;height:38px;margin-top:8px}
+.mcard .ico{width:58%;height:58%}
+.hole .critter .ico{width:52px;height:52px;display:block}
+.cell .ico{width:62%;height:62%}
+.close .ico{width:18px;height:18px}
+.confetti .ico{width:28px;height:28px}
+/* nav */
+.nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* santa says */
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:330px}
+.pad{aspect-ratio:1;border:0;border-radius:50%;cursor:pointer;opacity:.5;transition:opacity .1s,transform .1s;padding:0}
+.pad.lit{opacity:1;transform:scale(1.06)}
+.pad[disabled]{cursor:default}
+.p-red{background:var(--red)}.p-sage{background:var(--sage)}.p-navy{background:var(--navy)}
+.p-yellow{background:var(--yellow);border-radius:0;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+
+/* elf spelling */
+.scramble{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:52px}
+.tile-l{width:44px;height:52px;border-radius:10px;background:var(--yellow);color:#2E3528;font-family:var(--display);font-size:1.8rem;display:grid;place-items:center}
+.spellform{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%}
+.spellform input{flex:1;min-width:150px;max-width:260px;border:1.5px solid var(--sage);border-radius:999px;padding:10px 16px;font:inherit;font-size:1rem;background:var(--surface);color:var(--ink);text-transform:uppercase}
+.spellform input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* advent calendar */
+.section-title .hint{max-width:34rem}
+.switch{display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-weight:600;white-space:nowrap}
+.switch input{accent-color:var(--olive);width:16px;height:16px;margin:0}
+.advent{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:16px;max-width:760px;margin:0 auto}
+.door{position:relative;aspect-ratio:1;border:0;padding:0;cursor:pointer;background:var(--red);border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-size:1.7rem;color:#F7F8EB;transition:transform .15s,filter .15s}
+.door:hover{transform:scale(1.08) rotate(-5deg)}
+.door.sage{background:var(--sage)}
+.door.star{border-radius:0;background:var(--yellow);color:#2E3528;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.door.star .num{margin-top:6%}
+.door.diamond{border-radius:10px;background:repeating-linear-gradient(45deg,#C9DFEA 0 7px,#F7F8EB 7px 14px);color:var(--navy);transform:rotate(45deg) scale(.8)}
+.door.diamond .num{transform:rotate(-45deg)}
+.door.diamond:hover{transform:rotate(45deg) scale(.88)}
+.door.locked{filter:saturate(.25);opacity:.55}
+.door .num{line-height:1}
+.door .chk{position:absolute;left:50%;transform:translateX(-50%);bottom:10%;width:18px;height:18px;border-radius:50%;background:var(--surface);color:var(--olive);display:grid;place-items:center}
+.door .chk .ico{width:11px;height:11px}
+.door.star .chk{bottom:auto;top:64%}
+.door.diamond .chk{transform:translateX(-50%) rotate(-45deg);bottom:4%}
+.door.done{box-shadow:inset 0 0 0 3px var(--surface)}
+.q{font-family:var(--display);font-size:1.55rem;text-align:center;max-width:30rem;line-height:1.25;margin:0;text-wrap:balance}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:460px}
+.opts .btn{width:100%;padding-inline:14px}
+.btn.right{background:var(--hint);border-color:var(--hint);color:var(--ink)}
+.btn.wrong{background:var(--red);border-color:var(--red);color:#fff}
+.fact{color:var(--muted);text-align:center;max-width:30rem;margin:0;font-size:.95rem}
+@media (max-width:420px){.opts{grid-template-columns:1fr}}
+
+/* playlist */
+.player{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);max-width:760px;margin:0 auto;display:grid;grid-template-columns:1fr 1.35fr;overflow:hidden}
+.now{padding:28px 24px;background:var(--olive);color:#F7F8EB;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center}
+.disc{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle,var(--yellow) 0 13%,#F7F8EB 13% 17%,var(--red) 17% 100%);box-shadow:inset 0 0 0 9px rgba(0,0,0,.15);animation:spin 5s linear infinite;animation-play-state:paused}
+.player.playing .disc{animation-play-state:running}
+@keyframes spin{to{transform:rotate(360deg)}}
+.now h3{font-family:var(--display);font-weight:400;font-size:1.9rem;margin:2px 0;line-height:1.1}
+.now .sub{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.controls{display:flex;gap:12px;align-items:center}
+.ctl{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(247,248,235,.6);background:transparent;color:#F7F8EB;display:grid;place-items:center;cursor:pointer;padding:0}
+.ctl:hover{background:rgba(247,248,235,.15)}
+.ctl.big{width:60px;height:60px;background:var(--red);border-color:var(--red)}
+.ctl .ico{width:20px;height:20px}.ctl.big .ico{width:26px;height:26px}
+.bar{width:100%;height:6px;border-radius:3px;background:rgba(247,248,235,.25);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--yellow)}
+.tracks{list-style:none;margin:0;padding:10px 0}
+.track{display:flex;align-items:center;gap:4px;padding-right:10px}
+.track.on{background:var(--hint)}
+.track .pick{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:11px 18px;border:0;background:transparent;text-align:left;cursor:pointer;color:var(--ink);font-family:var(--body);font-size:1rem}
+.track .pick:hover{background:var(--hint)}
+.track .n{font-family:var(--display);font-size:1.35rem;width:24px;color:var(--red);flex:none}
+.track .t{flex:1;min-width:0}
+.track .t small{display:block;color:var(--muted);font-size:.78rem}
+.track .d{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.track .yt{color:var(--muted);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;flex:none}
+.track .yt:hover{background:var(--surface);color:var(--red)}
+.track .yt .ico{width:18px;height:18px}
+.yt-note{max-width:620px;margin:14px auto 0;text-align:center;color:var(--muted);font-size:.9rem}
+@media (max-width:640px){.player{grid-template-columns:1fr}}
+
+.confetti{position:fixed;top:-40px;font-size:1.8rem;pointer-events:none;z-index:60;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.6}}
+
+@media (prefers-reduced-motion: reduce){
+  .card,.card:hover,.btn,.mcard,.cell,.door,.pad{transition:none}
+  .disc{animation:none}
+  .confetti{display:none}
+  .shiny{animation:none;background:none;color:var(--ink)}
+}
+@media (max-width:480px){
+  .tile{min-width:72px;padding:10px 8px 8px}.tile b{font-size:1.9rem}
+  .stage{padding:12px 14px 18px}.win header{padding:14px 14px 4px}
+  .ornaments::before,.ornaments::after{width:36px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Games, carols and a countdown</span>
+    <h1 id="title">The Christmas Website</h1>
+    <div class="ornaments" aria-hidden="true"><span class="orn"></span><span class="orn star"></span><span class="orn olive"></span></div>
+    <p class="lede">I made this for the long evenings in December, when everyone is full and nobody wants to go outside. There are seven small games, a trivia door for every day of advent, and a little jukebox that plays the carols my grandmother used to hum. Grab a blanket.</p>
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+    <nav class="nav" aria-label="Sections"><a class="btn yellow" href="#games">Play a game</a><a class="btn outline" href="#advent">Advent calendar</a><a class="btn outline" href="#playlist">Playlist</a></nav>
+  </section>
+
+  <div class="section-title" id="games">
+    <span class="kicker">Go on, pick one</span>
+    <h2 class="shiny">Games under the tree</h2>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="section-title" id="advent">
+    <span class="kicker" id="adventKicker">One door a day, if you can wait</span>
+    <h2>Advent Calendar</h2>
+    <p class="hint">There is a trivia question behind every door. They open on their own day in December, but I will not tell anyone if you flip this. <label class="switch"><input type="checkbox" id="peek"> Open early</label></p>
+  </div>
+  <div class="advent" id="adventGrid"></div>
+
+  <div class="section-title" id="playlist">
+    <span class="kicker">Turn it up a bit</span>
+    <h2>Christmas Playlist</h2>
+  </div>
+  <section class="player" id="player" aria-label="Christmas playlist">
+    <div class="now">
+      <div class="disc" aria-hidden="true"></div>
+      <div><div class="sub">Now playing</div><h3 id="npTitle">Jingle Bells</h3><div class="sub" id="npBy"></div></div>
+      <div class="bar" aria-hidden="true"><i id="npBar"></i></div>
+      <div class="controls">
+        <button class="ctl" id="npPrev" aria-label="Previous track"></button>
+        <button class="ctl big" id="npPlay" aria-label="Play"></button>
+        <button class="ctl" id="npNext" aria-label="Next track"></button>
+      </div>
+    </div>
+    <ol class="tracks" id="trackList"></ol>
+  </section>
+  <p class="yt-note">Honest note: YouTube will not let its player load inside this page, so what you hear is my own music-box version of each carol, tapped out note by note. If you want the real thing with the choir and everything, the arrow next to each song takes you to YouTube.</p>
+
+  <footer>
+    <div class="ho">Merry Christmas, whoever you are</div>
+    Your best scores live in this browser and nowhere else, so if they vanish one day, that is why. Built at the kitchen table with a very large pot of cocoa.
+  </footer>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="win" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+    <header>
+      <h2 id="gTitle">Game</h2>
+      <div class="hud" id="hud"></div>
+      <button class="close" id="gClose" aria-label="Close game"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></button>
+    </header>
+    <div class="stage" id="stage"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store = {
+  get(k){ try { return JSON.parse(localStorage.getItem('xmas:' + k)); } catch (e) { return null; } },
+  set(k, v){ try { localStorage.setItem('xmas:' + k, JSON.stringify(v)); } catch (e) {} }
+};
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+/* ---------- hand-drawn icon set (flat, in the page's own palette) ---------- */
+const SVG = inner => `<svg class="ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true">${inner}</svg>`;
+const ICON = {
+  gift: SVG('<rect x="3" y="10" width="18" height="11" rx="1.5" fill="#D64B5C"/><rect x="2" y="6.5" width="20" height="4.5" rx="1" fill="#E0606F"/><rect x="10.4" y="6.5" width="3.2" height="14.5" fill="#E8D06A"/><path d="M12 6.5C10 3.5 6.5 3.5 6.8 5.5c.2 1.4 3 1.2 5.2 1zm0 0c2-3 5.5-3 5.2-1-.2 1.4-3 1.2-5.2 1z" fill="#E8D06A"/>'),
+  candy: SVG('<path d="M7 12 3 8.5v7zM17 12l4-3.5v7z" fill="#D64B5C"/><ellipse cx="12" cy="12" rx="5.2" ry="4.2" fill="#E8D06A"/><path d="M9.5 9.2q2.5 2.8 0 5.6M14.5 9.2q-2.5 2.8 0 5.6" stroke="#D64B5C" stroke-width="1.3" fill="none"/>'),
+  coal: SVG('<path d="M5.5 10.5 10 5.5l8 2.3 1.8 7-5.2 5.2-8-2.2z" fill="#2C3444"/><path d="m10 5.5 2.5 5.5-7 1.5" stroke="#4A5468" stroke-width="1" fill="none"/>'),
+  sleigh: SVG('<path d="M2.5 14h2.2l1.8-6.5h10.2l1 3.8H21v1.9a3 3 0 0 1-3 3H5.5a3 3 0 0 1-3-3z" fill="#D64B5C"/><rect x="7" y="9" width="7" height="3.5" rx=".8" fill="#E8D06A"/><path d="M3.5 19.5h15a2.5 2.5 0 0 0 2.5-2.5" stroke="#2C3444" stroke-width="1.8" fill="none" stroke-linecap="round"/>'),
+  tree: SVG('<path d="M12 2.5 17 9h-3l4 5h-3l4 5.5H5L9 14H6l4-5H7z" fill="#5B6438"/><path d="M10.5 11.5h3M9 16.5h6" stroke="#8F9C6D" stroke-width="1.2"/><rect x="10.4" y="19.5" width="3.2" height="3" fill="#2C3444"/><path d="m12 .8.8 1.7 1.8.2-1.3 1.2.4 1.8L12 4.8l-1.7.9.4-1.8L9.4 2.7l1.8-.2z" fill="#E8D06A"/>'),
+  star: SVG('<path d="m12 2 2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.9l-6.1 3.5 1.5-6.8L2.2 9l6.9-.7z" fill="#E8D06A"/>'),
+  bauble: SVG('<rect x="10" y="1.5" width="4" height="3.2" rx="1" fill="#E8D06A"/><circle cx="12" cy="13" r="8.2" fill="#D64B5C"/><path d="M4.4 11.5q7.6-4.2 15.2 0" stroke="#F7F8EB" stroke-width="1.6" fill="none"/><path d="M4.4 14.5q7.6 4.2 15.2 0" stroke="#F7F8EB" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>'),
+  bell: SVG('<path d="M12 2.5a6.2 6.2 0 0 0-6.2 6.2v4.3L3.8 16h16.4l-2-3V8.7A6.2 6.2 0 0 0 12 2.5z" fill="#E8D06A"/><path d="M8.5 15.9V9a3.5 3.5 0 0 1 2-3.2" stroke="#F7F8EB" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="12" cy="18.8" r="2.3" fill="#C9AE3F"/><path d="M10.4 2.5h3.2" stroke="#2C3444" stroke-width="1.6" stroke-linecap="round"/>'),
+  snowflake: SVG('<g stroke="currentColor" stroke-width="1.9" stroke-linecap="round" fill="none"><path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7"/><path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2M4.5 9.5l2 2.5-2 2.5M19.5 9.5l-2 2.5 2 2.5"/></g>'),
+  cane: SVG('<path d="M9 21.5V8.5a4.5 4.5 0 0 1 9 0" stroke="#D64B5C" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M9 21.5V8.5a4.5 4.5 0 0 1 9 0" stroke="#F7F8EB" stroke-width="4" fill="none" stroke-linecap="butt" stroke-dasharray="3 4.5" stroke-dashoffset="1"/>'),
+  cookie: SVG('<circle cx="12" cy="6" r="3.6" fill="#B8803F"/><path d="M8.2 9.2h7.6l3.6 3.6-1.8 1.8-2.4-1.6V22H8.8v-9l-2.4 1.6-1.8-1.8z" fill="#B8803F"/><circle cx="10.6" cy="5.6" r=".7" fill="#2E3528"/><circle cx="13.4" cy="5.6" r=".7" fill="#2E3528"/><path d="M10.5 7.4q1.5 1.2 3 0" stroke="#2E3528" stroke-width=".9" fill="none" stroke-linecap="round"/><circle cx="12" cy="13" r=".9" fill="#D64B5C"/><circle cx="12" cy="16.5" r=".9" fill="#E8D06A"/><path d="M8.6 9.6q3.4 1.6 6.8 0" stroke="#F7F8EB" stroke-width="1" fill="none"/>'),
+  elf: SVG('<circle cx="12" cy="15.5" r="6" fill="#F0C9A2"/><path d="M5.2 12.5 12 2.5l6.8 10z" fill="#5B6438"/><rect x="5" y="11.5" width="14" height="2.4" rx="1.2" fill="#D64B5C"/><circle cx="12" cy="2.6" r="1.6" fill="#E8D06A"/><circle cx="9.8" cy="15.5" r=".9" fill="#2E3528"/><circle cx="14.2" cy="15.5" r=".9" fill="#2E3528"/><path d="M10 18.3q2 1.6 4 0" stroke="#2E3528" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M5.6 14.5 3.8 16m14.6-1.5 1.8 1.5" stroke="#F0C9A2" stroke-width="2.4" stroke-linecap="round"/>'),
+  snowman: SVG('<circle cx="12" cy="16" r="6" fill="#F7F8EB" stroke="#8F9C6D" stroke-width="1"/><circle cx="12" cy="7.5" r="4.2" fill="#F7F8EB" stroke="#8F9C6D" stroke-width="1"/><rect x="7.5" y="3" width="9" height="1.6" rx=".8" fill="#2C3444"/><rect x="9" y=".5" width="6" height="3" fill="#2C3444"/><circle cx="10.5" cy="6.8" r=".7" fill="#2E3528"/><circle cx="13.5" cy="6.8" r=".7" fill="#2E3528"/><path d="M12 8.2 15.5 9 12 9.9z" fill="#E8A040"/><path d="M8.2 10.8h7.6" stroke="#D64B5C" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="14.5" r=".8" fill="#2E3528"/><circle cx="12" cy="17.5" r=".8" fill="#2E3528"/>'),
+  santa: SVG('<path d="M5 16.5C5 9.5 9.5 3.5 16.5 3.5l2.2 2.2C13.5 6.8 11.5 11.5 11.5 16.5z" fill="#D64B5C"/><rect x="3.5" y="15.5" width="11" height="4.5" rx="2.2" fill="#F7F8EB" stroke="#8F9C6D" stroke-width=".8"/><circle cx="19.2" cy="4.5" r="2.6" fill="#F7F8EB" stroke="#8F9C6D" stroke-width=".8"/>'),
+  reindeer: SVG('<path d="M8 9.5 5.5 3M8 9.5 4 6.5M16 9.5l2.5-6.5M16 9.5l4-3" stroke="#6B4A2B" stroke-width="1.9" stroke-linecap="round" fill="none"/><circle cx="12" cy="14" r="6.5" fill="#9B6B3E"/><ellipse cx="7" cy="12" rx="1.8" ry="1" fill="#9B6B3E"/><ellipse cx="17" cy="12" rx="1.8" ry="1" fill="#9B6B3E"/><circle cx="10" cy="12.5" r=".95" fill="#2E3528"/><circle cx="14" cy="12.5" r=".95" fill="#2E3528"/><circle cx="12" cy="16.8" r="2.1" fill="#D64B5C"/>'),
+  sparkle: SVG('<path d="m12 2 2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2z" fill="#E8D06A"/><path d="m19 16 .9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9z" fill="#D64B5C"/>'),
+  cross: SVG('<path d="M6 6l12 12M18 6 6 18" stroke="#D64B5C" stroke-width="3" stroke-linecap="round"/>'),
+  play: SVG('<path d="M8 5v14l11-7z" fill="currentColor"/>'),
+  pause: SVG('<rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/>'),
+  next: SVG('<path d="M6 5v14l9-7z" fill="currentColor"/><rect x="16.5" y="5" width="2.5" height="14" rx="1" fill="currentColor"/>'),
+  prev: SVG('<path d="M18 5v14L9 12z" fill="currentColor"/><rect x="5" y="5" width="2.5" height="14" rx="1" fill="currentColor"/>'),
+  note: SVG('<path d="M9 18.5V6l10-2.5v12" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="6.5" cy="18.5" r="2.8" fill="currentColor"/><circle cx="16.5" cy="15.5" r="2.8" fill="currentColor"/>'),
+  lock: SVG('<rect x="5" y="10.5" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2" fill="none"/>'),
+  check: SVG('<path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'),
+  ext: SVG('<path d="M14 4h6v6M20 4l-9 9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 13v6H5V5h6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>'),
+  clock: SVG('<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>')
+};
+const iconImg = (k, px) => { const i = new Image(); i.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(ICON[k].replace('width="1em" height="1em"', `width="${px}" height="${px}"`)); return i; };
+/* ---------- tiny synth (Web Audio) ---------- */
+let AC = null;
+const audio = () => { if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } if (AC && AC.state === 'suspended') AC.resume(); return AC; };
+function beep(f, d = .25, type = 'triangle'){
+  const ac = audio(); if (!ac) return;
+  const t = ac.currentTime, o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.value = f;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.22, t + .01); g.gain.exponentialRampToValueAtTime(.001, t + d);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t + d + .05);
+}
+function pluck(ac, f, t, d){
+  const o = ac.createOscillator(), o2 = ac.createOscillator(), g = ac.createGain(), g2 = ac.createGain();
+  o.type = 'sine'; o.frequency.value = f; o2.type = 'sine'; o2.frequency.value = f * 2;
+  g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.28, t + .008); g.gain.exponentialRampToValueAtTime(.001, t + d);
+  g2.gain.setValueAtTime(0, t); g2.gain.linearRampToValueAtTime(.07, t + .008); g2.gain.exponentialRampToValueAtTime(.001, t + d * .45);
+  o.connect(g).connect(ac.destination); o2.connect(g2).connect(ac.destination);
+  o.start(t); o2.start(t); o.stop(t + d + .05); o2.stop(t + d + .05);
+  return [o, o2];
+}
+const NOTE = { C: 0, 'C#': 1, D: 2, 'D#': 3, E: 4, F: 5, 'F#': 6, G: 7, 'G#': 8, A: 9, 'A#': 10, B: 11 };
+const freq = n => 440 * Math.pow(2, (NOTE[n.slice(0, -1)] - 9) / 12 + (+n.slice(-1) - 4));
+
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+/* ---------- sparkles ---------- */
+(function () {
+  const c = $('#snow'), ctx = c.getContext('2d');
+  let W, H, stars = [];
+  function resize(){
+    W = c.width = innerWidth; H = c.height = innerHeight; stars = [];
+    const N = Math.min(70, Math.floor((W * H) / 22000));
+    for (let i = 0; i < N; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: 8 + Math.random() * 18, w: Math.random() * 6.28, s: .004 + Math.random() * .01 });
+    if (reduceMotion) draw();
+  }
+  function star(x, y, r, a){
+    ctx.globalAlpha = a;
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const ang = i * Math.PI / 4, rad = i % 2 ? r * .18 : r;
+      ctx.lineTo(x + Math.cos(ang) * rad, y + Math.sin(ang) * rad);
+    }
+    ctx.closePath(); ctx.fill();
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = cssVar('--sparkle') || 'rgba(246,239,196,.9)';
+    for (const f of stars) {
+      const a = reduceMotion ? .7 : .45 + .45 * Math.sin(f.w);
+      star(f.x, f.y, f.r, a);
+      f.w += f.s;
+    }
+    ctx.globalAlpha = 1;
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  resize(); addEventListener('resize', resize);
+  if (!reduceMotion) draw();
+})();
+
+/* ---------- countdown ---------- */
+(function () {
+  const el = $('#countdown');
+  let built = false;
+  function tick(){
+    const now = new Date();
+    if (now.getMonth() === 11 && now.getDate() === 25) { el.innerHTML = '<div class="xmasday">It\'s Christmas Day!</div>'; return; }
+    let target = new Date(now.getFullYear(), 11, 25);
+    if (now > target) target = new Date(now.getFullYear() + 1, 11, 25);
+    let d = Math.max(0, target - now);
+    const days = Math.floor(d / 864e5); d -= days * 864e5;
+    const hrs = Math.floor(d / 36e5); d -= hrs * 36e5;
+    const min = Math.floor(d / 6e4); d -= min * 6e4;
+    const sec = Math.floor(d / 1e3);
+    const p = n => String(n).padStart(2, '0');
+    const vals = [['days', days], ['hours', p(hrs)], ['minutes', p(min)], ['seconds', p(sec)]];
+    if (!built) { el.innerHTML = vals.map(([l, v]) => `<div class="tile"><b>${v}</b><span>${l}</span></div>`).join(''); built = true; return; }
+    el.querySelectorAll('.tile b').forEach((b, i) => { const v = String(vals[i][1]); if (b.textContent !== v) b.textContent = v; });
+  }
+  tick(); setInterval(tick, 1000);
+})();
+
+/* ---------- game registry ---------- */
+const games = [
+  { id: 'catch',  icon: 'gift', name: 'Present Catch',          blurb: 'The elves are tossing presents off the roof again. Slide the sleigh under them before they land in the snow, and please do not catch the coal.', bestLabel: 'Best score', better: 'high' },
+  { id: 'memory', icon: 'bauble', name: 'Ornament Memory',        blurb: 'Twelve ornaments, six pairs, one slightly chaotic box. Turn them over two at a time and try to remember where everything went.', bestLabel: 'Fewest moves', better: 'low' },
+  { id: 'whack',  icon: 'elf', name: 'Whack-an-Elf',           blurb: 'The elves keep bursting out of the toy chests when they should be wrapping. Bop them back in. The snowmen are just visiting, so leave them be.', bestLabel: 'Best score', better: 'high' },
+  { id: 'ttt',    icon: 'cookie', name: 'Gingerbread Tic-Tac-Toe', blurb: 'Gingerbread against candy canes. The Grinch-bot is decent, not unbeatable. Get three in a row and the cookies are yours.', bestLabel: 'Wins', better: 'high' },
+  { id: 'simon',  icon: 'santa',  name: 'Santa Says',             blurb: 'Four ornaments, each with its own chime. Santa plays a little tune, you play it back, and every round he adds one more note. It gets hard around round seven.', bestLabel: 'Best rounds', better: 'high' },
+  { id: 'spell',  icon: 'candy',  name: 'Elf Spelling',           blurb: 'Someone shook the letter box. You have sixty seconds to put the Christmas words back together. Skipping is allowed, nobody is judging.', bestLabel: 'Best words', better: 'high' },
+  { id: 'dash',   icon: 'reindeer', name: 'Reindeer Dash',        blurb: 'Rudolph has to get home before dark. Jump the presents and the coal and keep running, because the snow only gets faster.', bestLabel: 'Best distance', better: 'high' }
+];
+const bestText = g => { const v = store.get('best:' + g.id); return v == null ? '<b>—</b>' : `<b>${v}</b>`; };
+function renderCards(){
+  $('#grid').innerHTML = games.map(g => `
+    <article class="card">
+      <div class="icon" aria-hidden="true">${ICON[g.icon]}</div>
+      <h3>${g.name}</h3>
+      <p>${g.blurb}</p>
+      <div class="best" id="best-${g.id}">${g.bestLabel}: ${bestText(g)}</div>
+      <button class="btn outline" data-play="${g.id}">Play</button>
+    </article>`).join('');
+}
+renderCards();
+function recordBest(id, value){
+  const g = games.find(x => x.id === id);
+  const cur = store.get('best:' + id);
+  const isBetter = cur == null || (g.better === 'high' ? value > cur : value < cur);
+  if (isBetter) { store.set('best:' + id, value); $('#best-' + id).innerHTML = `${g.bestLabel}: ${bestText(g)}`; }
+  return isBetter;
+}
+
+/* ---------- overlay plumbing ---------- */
+let current = null;
+const stage = $('#stage');
+const setHud = parts => { $('#hud').innerHTML = parts.map(p => `<span>${p}</span>`).join(''); };
+function openPanel(title){
+  if (current && current.stop) current.stop();
+  current = null;
+  $('#gTitle').textContent = title;
+  setHud([]);
+  stage.innerHTML = '';
+  $('#overlay').hidden = false;
+  document.body.style.overflow = 'hidden';
+}
+function launch(id){
+  const g = games.find(x => x.id === id);
+  openPanel(g.name);
+  current = starters[id]();
+}
+function closeGame(){
+  if (current && current.stop) current.stop();
+  current = null;
+  $('#overlay').hidden = true;
+  document.body.style.overflow = '';
+}
+$('#grid').addEventListener('click', e => { const b = e.target.closest('[data-play]'); if (b) launch(b.dataset.play); });
+$('#gClose').addEventListener('click', closeGame);
+$('#overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeGame(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#overlay').hidden) closeGame(); });
+
+function resultCard(title, lines, onAgain){
+  const d = document.createElement('div');
+  d.className = 'result';
+  d.innerHTML = `<h3>${title}</h3>${lines.map(l => `<p>${l}</p>`).join('')}<button class="btn">Once more</button>`;
+  d.querySelector('button').addEventListener('click', onAgain);
+  stage.appendChild(d);
+  d.querySelector('button').focus();
+}
+function celebrate(){
+  if (reduceMotion) return;
+  const bits = ['star', 'snowflake', 'gift', 'bell', 'bauble', 'candy'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span');
+    s.className = 'confetti'; s.innerHTML = ICON[bits[i % bits.length]]; s.style.color = '#8F9C6D';
+    s.style.left = Math.random() * 100 + 'vw'; s.style.animationDelay = Math.random() * .4 + 's';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2200);
+  }
+}
+
+const starters = {};
+
+/* ---------- 1. Present Catch ---------- */
+starters.catch = function () {
+  stage.innerHTML = '<canvas class="gcanvas" id="cg"></canvas><p class="hint">Arrow keys move the sleigh, or just drag it with a finger. Gifts are worth 1, candy 2, and coal takes 3 off.</p>';
+  const c = $('#cg'), ctx = c.getContext('2d');
+  const W = Math.max(280, Math.min(stage.clientWidth - 8, 640)), H = Math.round(W * .68);
+  c.width = W; c.height = H; c.style.width = W + 'px';
+  const IMG = { gift: iconImg('gift', 40), candy: iconImg('candy', 40), coal: iconImg('coal', 40), sleigh: iconImg('sleigh', 80), tree: iconImg('tree', 72) };
+  const PTS = { gift: 1, candy: 2, coal: -3 };
+  const drawImg = (img, x, y, w, h) => { if (img.complete && img.naturalWidth) ctx.drawImage(img, x, y, w, h); };
+  let px = W / 2, score = 0, time = 30, items = [], raf, timer, running = true, left = false, right = false, lastSpawn = 0, pops = [];
+  const PW = 76;
+  const onKeyDown = e => { if (e.key === 'ArrowLeft' || e.key === 'a') left = true; if (e.key === 'ArrowRight' || e.key === 'd') right = true; if (e.key.startsWith('Arrow')) e.preventDefault(); };
+  const onKeyUp = e => { if (e.key === 'ArrowLeft' || e.key === 'a') left = false; if (e.key === 'ArrowRight' || e.key === 'd') right = false; };
+  const onPointer = e => { if (e.pointerType === 'mouse' && e.buttons === 0) return; const r = c.getBoundingClientRect(); px = (e.clientX - r.left) * (W / r.width); };
+  addEventListener('keydown', onKeyDown); addEventListener('keyup', onKeyUp);
+  c.addEventListener('pointermove', onPointer); c.addEventListener('pointerdown', onPointer);
+  const hud = () => setHud(['Score ' + score, 'Time ' + time + 's']);
+  hud();
+  function spawn(){
+    const r = Math.random();
+    items.push({ x: 24 + Math.random() * (W - 48), y: -20, v: 1.6 + Math.random() * 1.6 + (30 - time) * .05, t: r < .6 ? 'gift' : r < .85 ? 'candy' : 'coal' });
+  }
+  function frame(ts){
+    if (!running) return;
+    if (left) px -= 6; if (right) px += 6;
+    px = Math.max(PW / 2, Math.min(W - PW / 2, px));
+    if (ts - lastSpawn > Math.max(380, 700 - (30 - time) * 10)) { spawn(); lastSpawn = ts; }
+    const py = H - 46;
+    for (const it of items) {
+      it.y += it.v;
+      if (!it.hit && it.y > py - 24 && it.y < py + 14 && Math.abs(it.x - px) < PW / 2 + 8) {
+        it.hit = true;
+        const pts = PTS[it.t];
+        score = Math.max(0, score + pts); hud();
+        pops.push({ x: it.x, y: py - 34, txt: (pts > 0 ? '+' : '') + pts, life: 40, bad: pts < 0 });
+      }
+    }
+    items = items.filter(it => !it.hit && it.y < H + 30);
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#ECEFDC'); sky.addColorStop(1, '#DDE4A5');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#F7F8EB'; ctx.beginPath(); ctx.ellipse(W / 2, H + 40, W * .75, 90, 0, 0, 6.28); ctx.fill();
+    drawImg(IMG.tree, 6, H - 96, 72, 72); drawImg(IMG.tree, W - 78, H - 96, 72, 72);
+    for (const it of items) drawImg(IMG[it.t], it.x - 20, it.y - 20, 40, 40);
+    drawImg(IMG.sleigh, px - 40, py - 34, 80, 80);
+    ctx.font = 'bold 18px Nunito, system-ui, sans-serif'; ctx.textAlign = 'center';
+    for (const p of pops) { ctx.fillStyle = p.bad ? '#B83A4A' : '#5B6438'; ctx.fillText(p.txt, p.x, p.y); p.y -= .8; p.life--; }
+    pops = pops.filter(p => p.life > 0);
+    raf = requestAnimationFrame(frame);
+  }
+  raf = requestAnimationFrame(frame);
+  timer = setInterval(() => { time--; hud(); if (time <= 0) end(); }, 1000);
+  function cleanup(){ running = false; cancelAnimationFrame(raf); clearInterval(timer); removeEventListener('keydown', onKeyDown); removeEventListener('keyup', onKeyUp); }
+  function end(){
+    cleanup();
+    ctx.fillStyle = 'rgba(46,53,40,.55)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#F7F8EB'; ctx.font = '44px Fondamento, cursive'; ctx.textAlign = 'center'; ctx.fillText("Time's up!", W / 2, H / 2);
+    const nb = recordBest('catch', score);
+    if (nb && score > 0) celebrate();
+    resultCard(score >= 25 ? 'Santa saw that' : 'Not bad at all', [`You scored <b>${score}</b>.`, nb ? 'That is a new best.' : 'Best: ' + store.get('best:catch')], () => launch('catch'));
+  }
+  return { stop: cleanup };
+};
+
+/* ---------- 2. Reindeer Memory ---------- */
+starters.memory = function () {
+  const kinds = ['tree', 'santa', 'snowman', 'reindeer', 'gift', 'bell'];
+  const deck = shuffle([...kinds, ...kinds]);
+  stage.innerHTML = '<div class="memgrid" id="mem"></div><p class="hint">Tap any two. If they match, they stay. If not, try to remember where they were.</p>';
+  const grid = $('#mem');
+  let open = [], moves = 0, matched = 0, lock = false, done = false;
+  const hud = () => setHud(['Moves ' + moves, 'Pairs ' + matched + '/6']);
+  hud();
+  deck.forEach((k, i) => {
+    const b = document.createElement('button');
+    b.className = 'mcard'; b.dataset.k = k; b.innerHTML = ICON.snowflake; b.setAttribute('aria-label', 'Card ' + (i + 1));
+    b.addEventListener('click', () => flip(b));
+    grid.appendChild(b);
+  });
+  function flip(b){
+    if (lock || done || b.classList.contains('up') || b.classList.contains('done')) return;
+    b.classList.add('up'); b.innerHTML = ICON[b.dataset.k]; open.push(b);
+    if (open.length === 2) {
+      moves++; hud(); lock = true;
+      const [a, c] = open;
+      if (a.dataset.k === c.dataset.k) {
+        matched++; a.classList.add('done'); c.classList.add('done'); a.disabled = c.disabled = true; open = []; lock = false; hud();
+        if (matched === 6) finish();
+      } else {
+        setTimeout(() => { a.classList.remove('up'); c.classList.remove('up'); a.innerHTML = c.innerHTML = ICON.snowflake; open = []; lock = false; }, 650);
+      }
+    }
+  }
+  function finish(){
+    done = true;
+    const nb = recordBest('memory', moves);
+    celebrate();
+    resultCard(moves <= 9 ? 'How did you do that' : 'All six pairs, done', [`Finished in <b>${moves}</b> moves.`, nb ? 'Fewest moves yet.' : 'Record: ' + store.get('best:memory') + ' moves'], () => launch('memory'));
+  }
+  return { stop(){ done = true; } };
+};
+
+/* ---------- 3. Whack-an-Elf ---------- */
+starters.whack = function () {
+  stage.innerHTML = '<div class="holes" id="holes"></div><p class="hint">Each elf you bop is a point. Snowmen are friends, and bopping one costs you two.</p>';
+  const holes = $('#holes');
+  let score = 0, time = 30, running = true, timer, loopT, activeT, active = -1;
+  const hud = () => setHud(['Score ' + score, 'Time ' + time + 's']);
+  hud();
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('button');
+    h.className = 'hole'; h.innerHTML = '<span class="lid"></span><span class="critter"></span>'; h.setAttribute('aria-label', 'Toy chest ' + (i + 1));
+    h.addEventListener('pointerdown', () => whack(i));
+    holes.appendChild(h);
+  }
+  const hs = [...holes.children];
+  function pop(){
+    if (!running) return;
+    if (active >= 0) hide(active);
+    let i; do { i = Math.floor(Math.random() * 9); } while (i === active);
+    active = i;
+    const h = hs[i];
+    h.dataset.kind = Math.random() < .78 ? 'elf' : 'snow';
+    h.querySelector('.critter').innerHTML = h.dataset.kind === 'elf' ? ICON.elf : ICON.snowman;
+    h.classList.add('up');
+    const stay = Math.max(450, 900 - (30 - time) * 14);
+    activeT = setTimeout(() => hide(i), stay);
+    loopT = setTimeout(pop, stay + 120);
+  }
+  function hide(i){ hs[i].classList.remove('up'); if (active === i) active = -1; }
+  function whack(i){
+    if (!running || !hs[i].classList.contains('up')) return;
+    const h = hs[i];
+    if (h.dataset.kind === 'elf') { score++; h.querySelector('.critter').innerHTML = ICON.sparkle; }
+    else { score = Math.max(0, score - 2); h.querySelector('.critter').innerHTML = ICON.cross; }
+    h.classList.add('bonk'); setTimeout(() => h.classList.remove('bonk'), 200);
+    hud();
+    setTimeout(() => hide(i), 150);
+  }
+  pop();
+  timer = setInterval(() => { time--; hud(); if (time <= 0) end(); }, 1000);
+  function cleanup(){ running = false; clearInterval(timer); clearTimeout(loopT); clearTimeout(activeT); }
+  function end(){
+    cleanup(); hs.forEach(h => { h.classList.remove('up'); h.disabled = true; });
+    const nb = recordBest('whack', score);
+    if (nb && score > 0) celebrate();
+    resultCard(score >= 20 ? 'The elves fear you' : 'That is time', [`You scored <b>${score}</b>.`, nb ? 'That is a new best.' : 'Best: ' + store.get('best:whack')], () => launch('whack'));
+  }
+  return { stop: cleanup };
+};
+
+/* ---------- 4. Gingerbread Tic-Tac-Toe ---------- */
+starters.ttt = function () {
+  const ME = 'me', BOT = 'bot';
+  const PIECE = { me: ICON.cookie, bot: ICON.cane };
+  const LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  let wins = store.get('best:ttt') || 0;
+  let sess = { w: 0, l: 0, d: 0 };
+  let board, over, cells, botT;
+  stage.innerHTML = '<div class="board" id="board"></div><p class="hint" id="tttHint">You are the gingerbread, the Grinch-bot has the candy canes. Go ahead, you first.</p><div class="gbtns" id="tttBtns"></div>';
+  const boardEl = $('#board'), hint = $('#tttHint');
+  const hud = () => setHud(['Won ' + sess.w, 'Lost ' + sess.l, 'Tied ' + sess.d]);
+  function newRound(){
+    clearTimeout(botT);
+    board = Array(9).fill(''); over = false; boardEl.innerHTML = ''; $('#tttBtns').innerHTML = '';
+    hint.textContent = 'You are the gingerbread, the Grinch-bot has the candy canes. Go ahead, you first.';
+    cells = [];
+    for (let i = 0; i < 9; i++) {
+      const c = document.createElement('button'); c.className = 'cell'; c.setAttribute('aria-label', 'Square ' + (i + 1));
+      c.addEventListener('click', () => play(i)); boardEl.appendChild(c); cells.push(c);
+    }
+    hud();
+  }
+  const winner = b => { for (const [a, c, d] of LINES) if (b[a] && b[a] === b[c] && b[a] === b[d]) return [a, c, d]; return null; };
+  function play(i){
+    if (over || board[i]) return;
+    board[i] = ME; cells[i].innerHTML = PIECE.me; cells[i].disabled = true;
+    if (check()) return;
+    hint.textContent = 'Grinch-bot is thinking. Give him a second.';
+    cells.forEach(c => c.disabled = true);
+    botT = setTimeout(() => {
+      const m = botMove(); board[m] = BOT; cells[m].innerHTML = PIECE.bot;
+      cells.forEach((c, k) => c.disabled = !!board[k]);
+      if (!check()) hint.textContent = 'Your go.';
+    }, 420);
+  }
+  function botMove(){
+    const empty = board.map((v, k) => v ? -1 : k).filter(k => k >= 0);
+    const tryWin = who => { for (const k of empty) { const b = board.slice(); b[k] = who; if (winner(b)) return k; } return -1; };
+    let m = tryWin(BOT); if (m >= 0) return m;
+    m = tryWin(ME); if (m >= 0) return m;
+    if (Math.random() < .15) return empty[Math.floor(Math.random() * empty.length)];
+    if (!board[4]) return 4;
+    const corners = [0, 2, 6, 8].filter(k => !board[k]); if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
+    return empty[Math.floor(Math.random() * empty.length)];
+  }
+  function check(){
+    const w = winner(board);
+    if (w) {
+      over = true; w.forEach(k => cells[k].classList.add('winline')); cells.forEach(c => c.disabled = true);
+      if (board[w[0]] === ME) { sess.w++; wins++; store.set('best:ttt', wins); $('#best-ttt').innerHTML = 'Wins: <b>' + wins + '</b>'; celebrate(); hint.textContent = 'You won! He will be sulking about that for a while.'; }
+      else { sess.l++; hint.textContent = 'He got you that time. Have another go.'; }
+    } else if (board.every(Boolean)) { over = true; sess.d++; hint.textContent = "A draw. Fine, everybody gets a cookie."; }
+    if (over) {
+      hud();
+      const b = document.createElement('button'); b.className = 'btn outline'; b.textContent = 'Next round'; b.addEventListener('click', newRound);
+      $('#tttBtns').appendChild(b); b.focus();
+    }
+    return over;
+  }
+  newRound();
+  return { stop(){ clearTimeout(botT); } };
+};
+
+/* ---------- 5. Santa Says ---------- */
+starters.simon = function () {
+  stage.innerHTML = '<div class="pads" id="pads"></div><p class="hint" id="simonHint">Watch which ornaments light up, then tap them back in the same order. Sound helps a lot.</p><div class="gbtns" id="simonBtns"><button class="btn" id="simonStart">Start</button></div>';
+  const pads = $('#pads'), hint = $('#simonHint');
+  const tones = [262, 330, 392, 523], cls = ['p-red', 'p-yellow', 'p-sage', 'p-navy'];
+  cls.forEach((c, i) => { const b = document.createElement('button'); b.className = 'pad ' + c; b.disabled = true; b.setAttribute('aria-label', 'Ornament ' + (i + 1)); b.addEventListener('pointerdown', () => press(i)); pads.appendChild(b); });
+  const ps = [...pads.children];
+  let seq = [], pos = 0, done = 0, busy = true, alive = true, timers = [];
+  const hud = () => setHud(['Round ' + Math.max(1, seq.length), 'Done ' + done]); hud();
+  const wait = ms => new Promise(r => timers.push(setTimeout(r, ms)));
+  async function flash(i, ms){ ps[i].classList.add('lit'); beep(tones[i], ms / 1000 * .9); await wait(ms); ps[i].classList.remove('lit'); await wait(110); }
+  async function showSeq(){
+    busy = true; ps.forEach(p => p.disabled = true); hint.textContent = 'Watch…'; await wait(500);
+    for (const i of seq) { if (!alive) return; await flash(i, Math.max(220, 460 - done * 15)); }
+    if (!alive) return; busy = false; pos = 0; ps.forEach(p => p.disabled = false); hint.textContent = 'Your turn.';
+  }
+  function next(){ seq.push(Math.floor(Math.random() * 4)); hud(); showSeq(); }
+  async function press(i){
+    if (busy || !alive) return;
+    flash(i, 240);
+    if (i !== seq[pos]) return lose();
+    pos++;
+    if (pos === seq.length) { done = seq.length; hud(); busy = true; await wait(650); next(); }
+  }
+  function lose(){
+    alive = false; ps.forEach(p => p.disabled = true); beep(110, .6, 'sawtooth');
+    const nb = recordBest('simon', done); if (nb && done > 0) celebrate();
+    resultCard(done >= 8 ? 'Santa is speechless' : 'Oops, wrong one', [`You repeated <b>${done}</b> rounds.`, nb ? 'That is a new best.' : 'Best: ' + store.get('best:simon')], () => launch('simon'));
+  }
+  $('#simonStart').addEventListener('click', () => { $('#simonBtns').innerHTML = ''; audio(); next(); });
+  return { stop(){ alive = false; timers.forEach(clearTimeout); } };
+};
+
+/* ---------- 6. Elf Spelling ---------- */
+starters.spell = function () {
+  const WORDS = ['REINDEER', 'SNOWFLAKE', 'MISTLETOE', 'GINGERBREAD', 'STOCKING', 'CHIMNEY', 'ORNAMENT', 'SLEIGH', 'TINSEL', 'CAROL', 'WREATH', 'NUTCRACKER', 'CANDLE', 'GARLAND', 'PRESENT', 'EGGNOG', 'HOLLY', 'ICICLE', 'SNOWMAN', 'CHESTNUT', 'FIREPLACE', 'PUDDING', 'ANGEL', 'RIBBON', 'COCOA', 'JINGLE'];
+  let pool = shuffle(WORDS.slice()), cur = '', score = 0, time = 60, timer, done = false;
+  stage.innerHTML = '<div class="scramble" id="scr"></div><form class="spellform" id="spellForm"><input id="spellIn" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type the word" aria-label="Your answer"><button class="btn" type="submit">Check</button><button class="btn outline" type="button" id="skip">Skip</button></form><p class="hint" id="spellHint">Sixty seconds on the clock. Type the word and press Check, or skip the ones that will not come.</p>';
+  const scr = $('#scr'), inp = $('#spellIn'), hint = $('#spellHint');
+  const hud = () => setHud(['Words ' + score, 'Time ' + time + 's']); hud();
+  const scramble = w => { let a; do { a = shuffle([...w]).join(''); } while (a === w); return a; };
+  function nextWord(){ if (!pool.length) pool = shuffle(WORDS.slice()); cur = pool.pop(); scr.innerHTML = [...scramble(cur)].map(ch => `<span class="tile-l">${ch}</span>`).join(''); inp.value = ''; inp.focus(); }
+  $('#spellForm').addEventListener('submit', e => {
+    e.preventDefault(); if (done) return;
+    if (inp.value.trim().toUpperCase() === cur) { score++; hud(); hint.textContent = 'Yes, ' + cur + '. Next one.'; beep(660, .15); nextWord(); }
+    else { hint.textContent = 'Not that. Have another look, or skip it.'; scr.classList.add('shake'); setTimeout(() => scr.classList.remove('shake'), 400); }
+  });
+  $('#skip').addEventListener('click', () => { if (done) return; hint.textContent = 'It was ' + cur + '. Tricky one.'; nextWord(); });
+  timer = setInterval(() => { time--; hud(); if (time <= 0) end(); }, 1000);
+  nextWord();
+  function end(){
+    done = true; clearInterval(timer); inp.disabled = true;
+    const nb = recordBest('spell', score); if (nb && score > 0) celebrate();
+    resultCard(score >= 10 ? 'Head elf of spelling' : 'That is time', [`You unscrambled <b>${score}</b> words.`, nb ? 'That is a new best.' : 'Best: ' + store.get('best:spell')], () => launch('spell'));
+  }
+  return { stop(){ done = true; clearInterval(timer); } };
+};
+
+/* ---------- 7. Reindeer Dash ---------- */
+starters.dash = function () {
+  stage.innerHTML = '<canvas class="gcanvas" id="dg"></canvas><p class="hint">Tap anywhere on the picture, or press Space, to jump. That is the whole game.</p>';
+  const c = $('#dg'), ctx = c.getContext('2d');
+  const W = Math.max(280, Math.min(stage.clientWidth - 8, 640)), H = Math.round(W * .5);
+  c.width = W; c.height = H; c.style.width = W + 'px';
+  const IMG = { deer: iconImg('reindeer', 56), gift: iconImg('gift', 40), coal: iconImg('coal', 40), tree: iconImg('tree', 48), star: iconImg('star', 18) };
+  const drawImg = (img, x, y, w, h) => { if (img.complete && img.naturalWidth) ctx.drawImage(img, x, y, w, h); };
+  const G = H - 36, DX = 56, DS = 56;
+  let dy = 0, vy = 0, onGround = true, obs = [], dist = 0, speed = 4, raf, running = true, lastSpawn = 0, gap = 1300;
+  const trees = [{ x: W * .35 }, { x: W * .95 }], stars = Array.from({ length: 6 }, () => ({ x: Math.random() * W, y: 14 + Math.random() * H * .35 }));
+  const hud = () => setHud(['Distance ' + Math.floor(dist / 10) + ' m']); hud();
+  const jump = () => { if (running && onGround) { vy = -11.5; onGround = false; beep(520, .12, 'sine'); } };
+  const onKey = e => { if (e.code === 'Space' || e.key === 'ArrowUp') { e.preventDefault(); jump(); } };
+  addEventListener('keydown', onKey); c.addEventListener('pointerdown', jump);
+  function frame(ts){
+    if (!running) return;
+    dist += speed; speed = 4 + Math.min(5, dist / 2500);
+    if (ts - lastSpawn > gap) { obs.push({ x: W + 20, t: Math.random() < .6 ? 'gift' : 'coal' }); lastSpawn = ts; gap = 750 + Math.random() * 900 - Math.min(350, dist / 25); }
+    vy += .55; dy += vy; if (dy >= 0) { dy = 0; vy = 0; onGround = true; }
+    obs.forEach(o => o.x -= speed); obs = obs.filter(o => o.x > -50);
+    trees.forEach(t => { t.x -= speed * .35; if (t.x < -60) t.x = W + 30 + Math.random() * 80; });
+    const px = DX + 12, py = G - DS + dy + 12, pw = DS - 22, ph = DS - 16;
+    for (const o of obs) { const ox = o.x + 7, oy = G - 40 + 8, ow = 26, oh = 30; if (px < ox + ow && px + pw > ox && py < oy + oh && py + ph > oy) return end(); }
+    const sky = ctx.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, '#ECEFDC'); sky.addColorStop(1, '#DDE4A5');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+    stars.forEach(st => drawImg(IMG.star, st.x, st.y, 18, 18));
+    trees.forEach(t => drawImg(IMG.tree, t.x, G - 46, 48, 48));
+    ctx.fillStyle = '#F7F8EB'; ctx.fillRect(0, G, W, H - G); ctx.fillStyle = '#8F9C6D'; ctx.fillRect(0, G, W, 2);
+    obs.forEach(o => drawImg(IMG[o.t], o.x, G - 40, 40, 40));
+    drawImg(IMG.deer, DX, G - DS + dy, DS, DS);
+    hud();
+    raf = requestAnimationFrame(frame);
+  }
+  raf = requestAnimationFrame(frame);
+  function cleanup(){ running = false; cancelAnimationFrame(raf); removeEventListener('keydown', onKey); }
+  function end(){
+    cleanup(); const m = Math.floor(dist / 10); beep(140, .5, 'sawtooth');
+    ctx.fillStyle = 'rgba(46,53,40,.55)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#F7F8EB'; ctx.font = '44px Fondamento, cursive'; ctx.textAlign = 'center'; ctx.fillText('Crash!', W / 2, H / 2);
+    const nb = recordBest('dash', m); if (nb && m > 0) celebrate();
+    resultCard(m >= 300 ? 'Rudolph is a little jealous' : 'Good run', [`You ran <b>${m}</b> metres.`, nb ? 'That is a new best.' : 'Best: ' + store.get('best:dash') + ' m'], () => launch('dash'));
+  }
+  return { stop: cleanup };
+};
+
+/* ---------- Advent calendar ---------- */
+const TRIVIA = [
+  { q: 'In which country did the decorated Christmas tree tradition begin?', a: ['Germany', 'Norway', 'Italy', 'Canada'], c: 0, f: 'Decorated trees spread from 16th-century Germany across Europe and then the world.' },
+  { q: 'How many reindeer pull the sleigh in "A Visit from St. Nicholas"?', a: ['Six', 'Eight', 'Nine', 'Twelve'], c: 1, f: 'Dasher, Dancer, Prancer, Vixen, Comet, Cupid, Donner and Blitzen. Rudolph came along in 1939.' },
+  { q: 'What is the name of the Grinch\'s long-suffering dog?', a: ['Rex', 'Buddy', 'Max', 'Toby'], c: 2, f: 'Max gets a single antler strapped to his head to play reindeer.' },
+  { q: 'Where is the McCallister family flying to when they forget Kevin in "Home Alone"?', a: ['London', 'Rome', 'New York', 'Paris'], c: 3, f: 'They make it all the way to Paris before anyone counts heads.' },
+  { q: 'What colour are mistletoe berries?', a: ['Red', 'White', 'Blue', 'Black'], c: 1, f: 'Mistletoe berries are white and waxy, and not something to snack on.' },
+  { q: 'Which carol is full of "fa la la la la"?', a: ['Silent Night', 'Deck the Halls', 'Joy to the World', 'O Holy Night'], c: 1, f: 'The tune is a 16th-century Welsh melody called "Nos Galan".' },
+  { q: 'If you received every gift in "The Twelve Days of Christmas", how many gifts would you have?', a: ['78', '144', '364', '365'], c: 2, f: 'The gifts repeat and stack up each day, totalling 364. Almost one for every day of the year.' },
+  { q: '"Jingle Bells" was originally written for which holiday?', a: ['Thanksgiving', 'New Year', 'Easter', 'Halloween'], c: 0, f: 'James Lord Pierpont published it in 1857 as "One Horse Open Sleigh", a Thanksgiving song.' },
+  { q: 'Saint Nicholas, the inspiration for Santa, lived in what is now which country?', a: ['Finland', 'Greece', 'Turkey', 'Netherlands'], c: 2, f: 'He was the bishop of Myra, a town on the coast of modern Turkey.' },
+  { q: 'What is traditionally hidden inside a British Christmas pudding for luck?', a: ['A coin', 'A ring', 'A bean', 'A key'], c: 0, f: 'A silver sixpence, stirred in on "Stir-up Sunday" weeks before Christmas.' },
+  { q: 'Which drink company\'s 1930s adverts made the red-suited, jolly Santa famous?', a: ['Pepsi', 'Coca-Cola', 'Guinness', 'Dr Pepper'], c: 1, f: 'Haddon Sundblom painted Santa for Coca-Cola from 1931 for over 30 years.' },
+  { q: 'What do Dutch children leave in their shoes for Sinterklaas\'s horse?', a: ['Cookies', 'Sugar cubes', 'Carrots', 'Apples'], c: 2, f: 'A carrot or some hay for the horse, and the shoe is filled with sweets in return.' },
+  { q: 'In the song, what is Frosty the Snowman\'s nose made of?', a: ['A carrot', 'A button', 'Coal', 'A pebble'], c: 1, f: 'A corncob pipe, a button nose and two eyes made out of coal.' },
+  { q: 'What is Scrooge\'s first name in "A Christmas Carol"?', a: ['Edmund', 'Ebenezer', 'Elijah', 'Edgar'], c: 1, f: 'Ebenezer Scrooge is visited by four ghosts in one night.' },
+  { q: 'Which red-leaved plant, native to Mexico, is known as the Christmas flower?', a: ['Holly', 'Amaryllis', 'Poinsettia', 'Hellebore'], c: 2, f: 'The red "petals" are actually leaves called bracts.' },
+  { q: 'What is the best-selling Christmas single of all time?', a: ['Last Christmas', 'White Christmas', 'All I Want for Christmas Is You', 'Jingle Bell Rock'], c: 1, f: 'Bing Crosby\'s "White Christmas" has sold an estimated 50 million copies.' },
+  { q: 'In "Elf", Buddy names four main food groups. Which is NOT one of them?', a: ['Candy canes', 'Candy corns', 'Syrup', 'Marshmallows'], c: 3, f: 'Candy, candy canes, candy corns and syrup. Marshmallows did not make the cut.' },
+  { q: 'The first commercial Christmas card was sent in 1843 in which country?', a: ['United States', 'France', 'England', 'Germany'], c: 2, f: 'Sir Henry Cole commissioned 1,000 cards in London. About 20 still survive.' },
+  { q: 'What is the Spanish word for Christmas?', a: ['Natale', 'Navidad', 'Noël', 'Natal'], c: 1, f: 'Feliz Navidad! Natale is Italian, Noël is French and Natal is Portuguese.' },
+  { q: 'Boxing Day falls on which date?', a: ['24 December', '25 December', '26 December', '31 December'], c: 2, f: 'It is named after the boxes of gifts given to servants and tradespeople the day after Christmas.' },
+  { q: 'Which famous ballet is set on Christmas Eve?', a: ['Swan Lake', 'The Nutcracker', 'Giselle', 'Coppélia'], c: 1, f: 'Tchaikovsky\'s "The Nutcracker" premiered in St. Petersburg in 1892.' },
+  { q: 'How do you say "Merry Christmas" in French?', a: ['Buon Natale', 'Frohe Weihnachten', 'Joyeux Noël', 'God Jul'], c: 2, f: 'Buon Natale is Italian, Frohe Weihnachten is German and God Jul is Swedish.' },
+  { q: 'In "The Twelve Days of Christmas", what did my true love give on the fifth day?', a: ['Five French hens', 'Five gold rings', 'Five turtle doves', 'Five swans'], c: 1, f: 'Five gold rings, the line everyone belts out the loudest.' },
+  { q: 'What do people traditionally pull apart at a British Christmas dinner?', a: ['A wishbone', 'A cracker', 'A ribbon', 'A piñata'], c: 1, f: 'Christmas crackers snap open to reveal a paper crown, a tiny toy and a terrible joke.' }
+];
+const adventEl = $('#adventGrid'), peek = $('#peek');
+try { peek.checked = !!store.get('peek'); } catch (e) {}
+peek.addEventListener('change', () => { store.set('peek', peek.checked); renderAdvent(); });
+const doorOpen = n => { if (peek.checked) return true; const now = new Date(); return now.getMonth() === 11 && now.getDate() >= n; };
+function renderAdvent(){
+  let solved = 0;
+  adventEl.innerHTML = TRIVIA.map((t, i) => {
+    const n = i + 1, open = doorOpen(n), ans = store.get('advent:' + n), done = ans === t.c; if (done) solved++;
+    const shape = ['', 'star', 'sage', 'diamond'][i % 4];
+    return `<button class="door ${shape} ${open ? '' : 'locked'} ${done ? 'done' : ''}" data-day="${n}" aria-label="Day ${n}${open ? '' : ', locked'}${done ? ', answered' : ''}"><span class="num">${n}</span>${done ? '<span class="chk">' + ICON.check + '</span>' : ''}</button>`;
+  }).join('');
+  $('#adventKicker').textContent = solved ? `${solved} of 24 answered` : 'One door a day, if you can wait';
+}
+renderAdvent();
+adventEl.addEventListener('click', e => { const d = e.target.closest('.door'); if (d) openDoor(+d.dataset.day); });
+function openDoor(n){
+  const t = TRIVIA[n - 1];
+  openPanel('Day ' + n);
+  if (!doorOpen(n)) {
+    stage.innerHTML = `<p class="q">Not yet. This one opens on December ${n}.</p><p class="fact">Can't wait? I understand. Tick "Open early" above the calendar and I will look the other way.</p><div class="gbtns"><button class="btn outline" id="doorClose">Close</button></div>`;
+    $('#doorClose').addEventListener('click', closeGame); return;
+  }
+  const prev = store.get('advent:' + n);
+  stage.innerHTML = `<p class="q">${t.q}</p><div class="opts" id="opts">${t.a.map((o, k) => `<button class="btn outline" data-k="${k}">${o}</button>`).join('')}</div><p class="fact" id="fact" hidden></p><div class="gbtns"><button class="btn outline" id="doorClose">Close</button></div>`;
+  $('#doorClose').addEventListener('click', closeGame);
+  const opts = [...$('#opts').children], fact = $('#fact');
+  function reveal(k){
+    opts.forEach((b, i) => { b.disabled = true; b.classList.remove('outline'); if (i === t.c) b.classList.add('right'); else if (i === k) b.classList.add('wrong'); else b.classList.add('outline'); });
+    fact.textContent = (k === t.c ? 'Yes, that is it. ' : 'Not that one. ') + t.f; fact.hidden = false;
+  }
+  if (prev != null) reveal(prev);
+  opts.forEach(b => b.addEventListener('click', () => { const k = +b.dataset.k; store.set('advent:' + n, k); reveal(k); if (k === t.c) { beep(784, .3); celebrate(); } else beep(160, .4, 'sawtooth'); renderAdvent(); }));
+}
+
+/* ---------- Jukebox ---------- */
+const TRACKS = [
+  { title: 'Jingle Bells', by: 'James Lord Pierpont, 1857', tempo: 160, yt: 'Jingle Bells christmas song',
+    notes: 'E4 1,E4 1,E4 2,E4 1,E4 1,E4 2,E4 1,G4 1,C4 1.5,D4 .5,E4 4,F4 1,F4 1,F4 1.5,F4 .5,F4 1,E4 1,E4 1,E4 .5,E4 .5,E4 1,D4 1,D4 1,E4 1,D4 2,G4 2,E4 1,E4 1,E4 2,E4 1,E4 1,E4 2,E4 1,G4 1,C4 1.5,D4 .5,E4 4,F4 1,F4 1,F4 1.5,F4 .5,F4 1,E4 1,E4 1,E4 .5,E4 .5,G4 1,G4 1,F4 1,D4 1,C4 4' },
+  { title: 'We Wish You a Merry Christmas', by: 'English traditional, 16th century', tempo: 170, yt: 'We Wish You a Merry Christmas',
+    notes: 'G4 1,C5 1,C5 .5,D5 .5,C5 .5,B4 .5,A4 1,A4 1,A4 1,D5 1,D5 .5,E5 .5,D5 .5,C5 .5,B4 1,G4 1,G4 1,E5 1,E5 .5,F5 .5,E5 .5,D5 .5,C5 1,A4 1,G4 .5,G4 .5,A4 1,D5 1,B4 1,C5 2,R 1' },
+  { title: 'Deck the Halls', by: 'Welsh traditional, 16th century', tempo: 150, yt: 'Deck the Halls carol',
+    notes: 'G4 1.5,F4 .5,E4 1,D4 1,C4 1,D4 1,E4 1,C4 1,D4 .5,E4 .5,F4 .5,D4 .5,E4 1.5,D4 .5,C4 1,B3 1,C4 2,G4 1.5,F4 .5,E4 1,D4 1,C4 1,D4 1,E4 1,C4 1,D4 .5,E4 .5,F4 .5,D4 .5,E4 1.5,D4 .5,C4 1,B3 1,C4 2,D4 1.5,E4 .5,F4 1,D4 1,E4 1.5,F4 .5,G4 1,D4 1,E4 .5,F4 .5,G4 .5,A4 .5,B4 1,C5 1,B4 1,A4 1,G4 1.5,F4 .5,E4 1,D4 1,C4 1,D4 1,E4 1,C4 1,D4 .5,E4 .5,F4 .5,D4 .5,E4 1.5,D4 .5,C4 1,B3 1,C4 2' },
+  { title: 'Silent Night', by: 'Franz Xaver Gruber, 1818', tempo: 112, yt: 'Silent Night carol',
+    notes: 'G4 1.5,A4 .5,G4 1,E4 3,G4 1.5,A4 .5,G4 1,E4 3,D5 2,D5 1,B4 3,C5 2,C5 1,G4 3,A4 2,A4 1,C5 1.5,B4 .5,A4 1,G4 1.5,A4 .5,G4 1,E4 3,A4 2,A4 1,C5 1.5,B4 .5,A4 1,G4 1.5,A4 .5,G4 1,E4 3,D5 2,D5 1,F5 1.5,D5 .5,B4 1,C5 3,E5 3,C5 1,G4 1,E4 1,G4 1.5,F4 .5,D4 1,C4 3,R 1' },
+  { title: 'Joy to the World', by: 'Lowell Mason, 1839', tempo: 126, yt: 'Joy to the World carol',
+    notes: 'C5 1.5,B4 .5,A4 1,G4 1.5,F4 .5,E4 1,D4 1,C4 1.5,G4 .5,A4 1.5,A4 .5,B4 1.5,B4 .5,C5 2.5,C5 .5,C5 .5,B4 .5,A4 .5,G4 .5,G4 .75,F4 .25,E4 .5,C5 .5,C5 .5,B4 .5,A4 .5,G4 .5,G4 .75,F4 .25,E4 .5,E4 .5,E4 .5,E4 .5,E4 .5,E4 .25,F4 .25,G4 1.5,F4 .25,E4 .25,D4 .5,D4 .5,D4 .5,D4 .25,E4 .25,F4 1.5,E4 .25,D4 .25,C4 1,C5 1,A4 1.5,G4 .5,F4 .5,E4 .5,F4 1,E4 1,D4 1,C4 2,R 1' },
+  { title: 'O Christmas Tree', by: 'German traditional, 1824', tempo: 132, yt: 'O Christmas Tree carol',
+    notes: 'G4 1,C5 1.5,C5 .5,C5 1.5,D5 .5,E5 1.5,E5 .5,E5 1.5,E5 .5,D5 1,E5 1,F5 1,B4 2,D5 1,C5 2,G4 1,C5 1.5,C5 .5,C5 1.5,D5 .5,E5 1.5,E5 .5,E5 1.5,E5 .5,D5 1,E5 1,F5 1,B4 2,D5 1,C5 2,R 1' }
+].map(t => { t.seq = t.notes.split(',').map(x => { const [n, b] = x.trim().split(' '); return [n, +b]; }); t.dur = t.seq.reduce((a, [, b]) => a + b, 0) * 60 / t.tempo; return t; });
+(function () {
+  const el = $('#player'), title = $('#npTitle'), by = $('#npBy'), bar = $('#npBar'), playBtn = $('#npPlay'), list = $('#trackList');
+  const fmt = sec => Math.floor(sec / 60) + ':' + String(Math.round(sec % 60)).padStart(2, '0');
+  list.innerHTML = TRACKS.map((t, i) => `<li class="track"><button class="pick" data-i="${i}"><span class="n">${i + 1}</span><span class="t">${t.title}<small>${t.by}</small></span><span class="d">${fmt(t.dur)}</span></button><a class="yt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(t.yt)}" target="_blank" rel="noopener" aria-label="Open ${t.title} on YouTube" title="Open on YouTube">${ICON.ext}</a></li>`).join('');
+  $('#npPrev').innerHTML = ICON.prev; $('#npNext').innerHTML = ICON.next;
+  let idx = 0, playing = false, oscs = [], startAt = 0, offset = 0, raf;
+  function render(){
+    title.textContent = TRACKS[idx].title; by.textContent = TRACKS[idx].by;
+    list.querySelectorAll('.track').forEach((t, i) => t.classList.toggle('on', i === idx));
+    el.classList.toggle('playing', playing);
+    playBtn.innerHTML = playing ? ICON.pause : ICON.play; playBtn.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  }
+  function silence(){ oscs.forEach(o => { try { o.stop(); } catch (e) {} }); oscs = []; cancelAnimationFrame(raf); }
+  function start(from = 0){
+    const ac = audio(); if (!ac) { by.textContent = 'Sound is not available in this browser.'; return; }
+    silence();
+    const tr = TRACKS[idx], beat = 60 / tr.tempo, t0 = ac.currentTime + .08;
+    let pos = 0;
+    for (const [n, b] of tr.seq) { const len = b * beat; if (pos + len > from && n !== 'R') oscs.push(...pluck(ac, freq(n), t0 + Math.max(0, pos - from), len * 1.7)); pos += len; }
+    startAt = t0 - from; playing = true; render(); tick();
+  }
+  function tick(){
+    if (!playing || !AC) return;
+    const p = AC.currentTime - startAt, d = TRACKS[idx].dur;
+    bar.style.width = Math.min(100, p / d * 100) + '%';
+    if (p >= d + .7) { idx = (idx + 1) % TRACKS.length; start(0); return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function pause(){ offset = AC ? Math.max(0, AC.currentTime - startAt) : 0; playing = false; silence(); render(); }
+  playBtn.addEventListener('click', () => playing ? pause() : start(offset < TRACKS[idx].dur ? offset : 0));
+  const skip = d => { idx = (idx + d + TRACKS.length) % TRACKS.length; offset = 0; bar.style.width = '0'; playing ? start(0) : render(); };
+  $('#npNext').addEventListener('click', () => skip(1));
+  $('#npPrev').addEventListener('click', () => skip(-1));
+  list.addEventListener('click', e => { const b = e.target.closest('.pick'); if (!b) return; idx = +b.dataset.i; offset = 0; start(0); });
+  render();
+})();
+
+/* ---------- ReactBits-style effects, ported to vanilla JS + GSAP ---------- */
+/* SplitText: split the title into letters and stagger them in */
+(function () {
+  const h1 = $('#title'), text = h1.textContent.trim();
+  h1.setAttribute('aria-label', text); h1.textContent = '';
+  text.split(' ').forEach((w, i, arr) => {
+    const ws = document.createElement('span'); ws.className = 'w'; ws.setAttribute('aria-hidden', 'true');
+    [...w].forEach(ch => { const c = document.createElement('span'); c.className = 'ch'; c.textContent = ch; ws.appendChild(c); });
+    h1.appendChild(ws); if (i < arr.length - 1) h1.appendChild(document.createTextNode(' '));
+  });
+  if (reduceMotion || !window.gsap) return;
+  gsap.from('#title .ch', { y: 46, opacity: 0, rotate: -10, duration: .9, ease: 'back.out(1.8)', stagger: .035, delay: .1 });
+  /* BlurText */
+  gsap.from('.lede', { opacity: 0, filter: 'blur(12px)', y: 10, duration: .9, delay: .8, ease: 'power2.out' });
+  gsap.from('.ornaments', { opacity: 0, scale: .6, duration: .7, delay: .6, ease: 'back.out(2)' });
+  gsap.from('.tile', { opacity: 0, y: 22, scale: .9, duration: .6, stagger: .08, delay: 1, ease: 'back.out(2)' });
+  gsap.from('.card', { opacity: 0, y: 34, duration: .7, stagger: .1, delay: 1.2, ease: 'power3.out' });
+})();
+
+/* Magnet: buttons lean toward the cursor. TiltedCard: game cards tilt in 3D. */
+(function () {
+  if (reduceMotion || !window.gsap || !matchMedia('(hover: hover)').matches) return;
+  document.querySelectorAll('.hero .btn, .card .btn').forEach(b => {
+    b.addEventListener('mousemove', e => {
+      const r = b.getBoundingClientRect();
+      gsap.to(b, { x: (e.clientX - (r.left + r.width / 2)) * .35, y: (e.clientY - (r.top + r.height / 2)) * .35, duration: .3, ease: 'power2.out' });
+    });
+    b.addEventListener('mouseleave', () => gsap.to(b, { x: 0, y: 0, duration: .7, ease: 'elastic.out(1, .4)' }));
+  });
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+      gsap.to(card, { rotateY: px * 14, rotateX: -py * 14, scale: 1.03, transformPerspective: 900, duration: .4, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', () => gsap.to(card, { rotateY: 0, rotateX: 0, scale: 1, duration: .6, ease: 'power3.out' }));
+  });
+})();
+
+/* ClickSpark: a burst of little lines wherever you click */
+(function () {
+  const c = document.createElement('canvas'); c.id = 'spark'; c.setAttribute('aria-hidden', 'true'); document.body.appendChild(c);
+  const ctx = c.getContext('2d');
+  let sparks = [], running = false;
+  const rs = () => { c.width = innerWidth; c.height = innerHeight; };
+  rs(); addEventListener('resize', rs);
+  addEventListener('pointerdown', e => {
+    if (reduceMotion) return;
+    const colors = [cssVar('--red'), cssVar('--yellow-deep'), cssVar('--olive')];
+    for (let i = 0; i < 10; i++) sparks.push({ x: e.clientX, y: e.clientY, a: i * Math.PI * 2 / 10, t: performance.now(), c: colors[i % 3] });
+    if (!running) { running = true; requestAnimationFrame(draw); }
+  });
+  function draw(now){
+    ctx.clearRect(0, 0, c.width, c.height);
+    sparks = sparks.filter(s => now - s.t < 480);
+    ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    for (const s of sparks) {
+      const p = (now - s.t) / 480, e = p * (2 - p), d = e * 34, len = 13 * (1 - e);
+      ctx.strokeStyle = s.c; ctx.beginPath();
+      ctx.moveTo(s.x + Math.cos(s.a) * d, s.y + Math.sin(s.a) * d);
+      ctx.lineTo(s.x + Math.cos(s.a) * (d + len), s.y + Math.sin(s.a) * (d + len));
+      ctx.stroke();
+    }
+    if (sparks.length) requestAnimationFrame(draw); else running = false;
+  }
+})();
+</script>
+</body>
+</html>
